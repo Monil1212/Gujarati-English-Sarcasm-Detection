@@ -1,0 +1,379 @@
+{
+  "model_name": "Group-Calibrated Linear SVM (C=1.0)",
+  "export_timestamp": "2026-10-26T14:24:31.642077",
+  "scikit_learn_version": "1.9.1",
+  "total_dataset_size": 1200,
+  "unique_groups": 241,
+  "dataset_provenance": "Synthetic programmatically authored examples; spelling variants are generated, not collected from users.",
+  "evaluation_limitations": "Examples are synthetic and group IDs are author-defined. Held-out scores do not establish performance on real conversation. The calibrated SVM uses group-contained training folds.",
+  "probability_calibrated": true,
+  "random_seed": 42,
+  "split_method": "Two-stage GroupShuffleSplit by group_id (15% test, then 15% of total validation)",
+  "feature_settings": {
+    "word_tfidf": {
+      "ngram_range": [
+        1,
+        3
+      ],
+      "max_features": 6000
+    },
+    "char_wb_tfidf": {
+      "ngram_range": [
+        3,
+        5
+      ],
+      "max_features": 12000
+    }
+  },
+  "calibration": {
+    "method": "CalibratedClassifierCV with sigmoid calibration",
+    "fold_strategy": "StratifiedGroupKFold",
+    "fold_count": 5,
+    "feature_extraction_inside_calibrated_estimator": true,
+    "fold_group_overlap": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "train_samples": 832,
+  "train_groups": 168,
+  "val_samples": 171,
+  "val_groups": 36,
+  "test_samples": 197,
+  "test_groups": 37,
+  "leakage_audit": {
+    "train_test_overlap": 0,
+    "train_val_overlap": 0,
+    "val_test_overlap": 0,
+    "status": "PASSED"
+  },
+  "metrics": {
+    "accuracy": 0.8376,
+    "macro_precision": 0.8439,
+    "macro_recall": 0.8422,
+    "macro_f1": 0.8375,
+    "sarcasm": {
+      "precision": 0.9101,
+      "recall": 0.7714,
+      "f1": 0.8351
+    },
+    "non_sarcasm": {
+      "precision": 0.7778,
+      "recall": 0.913,
+      "f1": 0.84
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "Non-Sarcasm",
+      "Sarcasm"
+    ],
+    "matrix": [
+      [
+        84,
+        8
+      ],
+      [
+        24,
+        81
+      ]
+    ],
+    "tn": 84,
+    "fp": 8,
+    "fn": 24,
+    "tp": 81
+  },
+  "candidate_comparison": [
+    {
+      "model_name": "Logistic Regression (C=2.0)",
+      "cv_macro_f1_mean": 0.8618,
+      "cv_macro_f1_std": 0.0367,
+      "val_accuracy": 0.8713,
+      "val_macro_f1": 0.8713
+    },
+    {
+      "model_name": "Complement Naive Bayes (alpha=0.5)",
+      "cv_macro_f1_mean": 0.8531,
+      "cv_macro_f1_std": 0.0383,
+      "val_accuracy": 0.848,
+      "val_macro_f1": 0.8479
+    },
+    {
+      "model_name": "Multinomial Naive Bayes (alpha=0.5)",
+      "cv_macro_f1_mean": 0.8532,
+      "cv_macro_f1_std": 0.0371,
+      "val_accuracy": 0.848,
+      "val_macro_f1": 0.8479
+    },
+    {
+      "model_name": "Random Forest (n_est=200)",
+      "cv_macro_f1_mean": 0.8918,
+      "cv_macro_f1_std": 0.0308,
+      "val_accuracy": 0.8187,
+      "val_macro_f1": 0.8185
+    },
+    {
+      "model_name": "Group-Calibrated Linear SVM (C=1.0)",
+      "cv_macro_f1_mean": null,
+      "cv_macro_f1_std": null,
+      "val_accuracy": 0.9064,
+      "val_macro_f1": 0.9064
+    }
+  ],
+  "subset_performance": {
+    "source_type": {
+      "programmatically_authored": {
+        "count": 125,
+        "accuracy": 0.832
+      },
+      "spelling_variant": {
+        "count": 72,
+        "accuracy": 0.8472
+      }
+    },
+    "sub_category": {
+      "factual_neutral": {
+        "count": 50,
+        "accuracy": 1.0
+      },
+      "genuine_negative": {
+        "count": 12,
+        "accuracy": 0.9167
+      },
+      "genuine_positive": {
+        "count": 30,
+        "accuracy": 0.7667
+      },
+      "mock_praise": {
+        "count": 78,
+        "accuracy": 0.7821
+      },
+      "rhetorical_ridicule": {
+        "count": 14,
+        "accuracy": 0.8571
+      },
+      "sentiment_contrast": {
+        "count": 11,
+        "accuracy": 0.6364
+      },
+      "understatement_irony": {
+        "count": 2,
+        "accuracy": 0.5
+      }
+    },
+    "language": {
+      "code_mixed_guj_eng": {
+        "count": 197,
+        "accuracy": 0.8376
+      }
+    }
+  },
+  "error_analysis": {
+    "total_errors": 32,
+    "false_positives_count": 8,
+    "false_negatives_count": 24,
+    "false_positives": [
+      {
+        "sentence": "Aaje hawa shital che ane sky cloudy che, garden ma walking karvani maja aave che.",
+        "sub_category": "genuine_positive",
+        "group_id": 127,
+        "sarcasm_prob": 0.549
+      },
+      {
+        "sentence": "Nature forest tour ma lion pride resting near safari track joya, majestic experience hatu.",
+        "sub_category": "genuine_positive",
+        "group_id": 174,
+        "sarcasm_prob": 0.7778
+      },
+      {
+        "sentence": "Aaje hawa shital chhe ane sky cloudy chhe, garden ma walking karvani maja aave chhe.",
+        "sub_category": "genuine_positive",
+        "group_id": 127,
+        "sarcasm_prob": 0.5526
+      },
+      {
+        "sentence": "Aaj no weather ekdum pleasant che, evening walk par javani majja aavshe.",
+        "sub_category": "genuine_positive",
+        "group_id": 127,
+        "sarcasm_prob": 0.5961
+      },
+      {
+        "sentence": "Aaj no weather ekdum pleasant che, evening walk par javani maja aavshe.",
+        "sub_category": "genuine_positive",
+        "group_id": 127,
+        "sarcasm_prob": 0.576
+      },
+      {
+        "sentence": "Alarm snooze button accidental press na lidhe examination hall 30 minute late pohchyo, paper miss thayo.",
+        "sub_category": "genuine_negative",
+        "group_id": 188,
+        "sarcasm_prob": 0.5064
+      },
+      {
+        "sentence": "Aaj no weather ekdum pleasant chhe, evening walk par javani majja aavshe.",
+        "sub_category": "genuine_positive",
+        "group_id": 127,
+        "sarcasm_prob": 0.5811
+      },
+      {
+        "sentence": "National park safari tour exceptionally successful rahyo ane wild animal sightings close thi thaya.",
+        "sub_category": "genuine_positive",
+        "group_id": 174,
+        "sarcasm_prob": 0.5202
+      }
+    ],
+    "false_negatives": [
+      {
+        "sentence": "Flight canceled, luggage lost, and no hotel provided, minor inconvenience by airline!",
+        "sub_category": "understatement_irony",
+        "group_id": 61,
+        "sarcasm_prob": 0.154
+      },
+      {
+        "sentence": "Inflation 8% chhe ane salary hike 2% aapi, financial independence unlock thai gai!",
+        "sub_category": "sentiment_contrast",
+        "group_id": 26,
+        "sarcasm_prob": 0.4188
+      },
+      {
+        "sentence": "Underpass construction 4 years thi chalte chalte monument bani gayo che, architectural heritage!",
+        "sub_category": "sentiment_contrast",
+        "group_id": 20,
+        "sarcasm_prob": 0.4752
+      },
+      {
+        "sentence": "IT helpdesk laptop hardware broken screen mate advice aape che 'restart machine and clear browser cache', technical omnipotence!",
+        "sub_category": "mock_praise",
+        "group_id": 109,
+        "sarcasm_prob": 0.3929
+      },
+      {
+        "sentence": "Streaming video quality 4K payment karya pachi 360p ma buffer thay chhe, cinematic visual fidelity!",
+        "sub_category": "mock_praise",
+        "group_id": 83,
+        "sarcasm_prob": 0.4273
+      },
+      {
+        "sentence": "Underpass construction 4 years thi chalte chalte monument bani gayo chhe, architectural heritage!",
+        "sub_category": "sentiment_contrast",
+        "group_id": 20,
+        "sarcasm_prob": 0.4624
+      },
+      {
+        "sentence": "Auto-correct spelling correction simple dictionary word replace kari profane slang banavi de che, moral text engine!",
+        "sub_category": "mock_praise",
+        "group_id": 114,
+        "sarcasm_prob": 0.3948
+      },
+      {
+        "sentence": "Corporate family claims kare che pan weekend overtime compensation zero aape che, unconditional love!",
+        "sub_category": "rhetorical_ridicule",
+        "group_id": 34,
+        "sarcasm_prob": 0.415
+      },
+      {
+        "sentence": "Food delivery 2 kalak late aavi ane khavanu completely thandu baraf hatu, royal hospitality!",
+        "sub_category": "mock_praise",
+        "group_id": 7,
+        "sarcasm_prob": 0.3821
+      },
+      {
+        "sentence": "Railway platform par announcement thyu train platform 1 par aavse ane aavi platform 6 par, fitness training for passengers!",
+        "sub_category": "mock_praise",
+        "group_id": 74,
+        "sarcasm_prob": 0.4242
+      },
+      {
+        "sentence": "Dinner ma khavanu bahi gayu, masterchef quality nu food malyu aaje.",
+        "sub_category": "mock_praise",
+        "group_id": 67,
+        "sarcasm_prob": 0.1389
+      },
+      {
+        "sentence": "Weather report e clear sunshine forecast apyo ane unseasonal torrential downpour aavi gayo, supercomputer meteorological accuracy!",
+        "sub_category": "mock_praise",
+        "group_id": 112,
+        "sarcasm_prob": 0.3237
+      },
+      {
+        "sentence": "Keyboard spacebar button stick thai gayu ane IT ticket reply 'update graphics card driver', pinnacle of system repairs!",
+        "sub_category": "mock_praise",
+        "group_id": 109,
+        "sarcasm_prob": 0.4202
+      },
+      {
+        "sentence": "IT helpdesk laptop hardware broken screen mate advice aape chhe 'restart machine and clear browser cache', technical omnipotence!",
+        "sub_category": "mock_praise",
+        "group_id": 109,
+        "sarcasm_prob": 0.3851
+      },
+      {
+        "sentence": "Auto-correct spelling correction simple dictionary word replace kari profane slang banavi de chhe, moral text engine!",
+        "sub_category": "mock_praise",
+        "group_id": 114,
+        "sarcasm_prob": 0.3803
+      },
+      {
+        "sentence": "Train ticket WL 250 hati ane chart preparation pachi cancel thai gai, holiday trip ekdum secured!",
+        "sub_category": "mock_praise",
+        "group_id": 74,
+        "sarcasm_prob": 0.2738
+      },
+      {
+        "sentence": "Streaming video quality 4K payment karya pachi 360p ma buffer thay che, cinematic visual fidelity!",
+        "sub_category": "mock_praise",
+        "group_id": 83,
+        "sarcasm_prob": 0.4586
+      },
+      {
+        "sentence": "Metro bridge banavta banavta aakhi generation pass thai gai, heritage architecture project!",
+        "sub_category": "sentiment_contrast",
+        "group_id": 20,
+        "sarcasm_prob": 0.2489
+      },
+      {
+        "sentence": "Food completely burnt aavyu ane restaurant bill five star charge karyo, royal chhef talent!",
+        "sub_category": "mock_praise",
+        "group_id": 67,
+        "sarcasm_prob": 0.4729
+      },
+      {
+        "sentence": "Corporate family claims kare chhe pan weekend overtime compensation zero aape chhe, unconditional love!",
+        "sub_category": "rhetorical_ridicule",
+        "group_id": 34,
+        "sarcasm_prob": 0.3905
+      },
+      {
+        "sentence": "Tatkal ticket booking time IRCTC payment gateway crash thai gayo, seamless digital booking experience!",
+        "sub_category": "mock_praise",
+        "group_id": 74,
+        "sarcasm_prob": 0.383
+      },
+      {
+        "sentence": "Movie app monthly subscription renew thayo pan popular movies rent pay karva magse, customer first monetisation!",
+        "sub_category": "mock_praise",
+        "group_id": 83,
+        "sarcasm_prob": 0.4165
+      },
+      {
+        "sentence": "Railway platform par announcement thayu train platform 1 par aavse ane aavi platform 6 par, fitness training for passengers!",
+        "sub_category": "mock_praise",
+        "group_id": 74,
+        "sarcasm_prob": 0.3788
+      },
+      {
+        "sentence": "Food completely burnt aavyu ane restaurant bill five star charge karyo, royal chef talent!",
+        "sub_category": "mock_praise",
+        "group_id": 67,
+        "sarcasm_prob": 0.4855
+      }
+    ]
+  },
+  "classes": [
+    "Non-Sarcasm",
+    "Sarcasm"
+  ]
+}

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Gujarati-English Sarcasm Detection System</title>
+  <style>
+    :root{font-family:Arial, sans-serif;color:#17212b;background:#f4f6f8;font-synthesis:none}*{box-sizing:border-box}body{margin:0}header{background:#173b57;color:#fff;padding:24px max(20px,calc((100% - 920px)/2))}header h1{font-size:clamp(1.45rem,3vw,2rem);margin:0 0 8px}header p{margin:0;color:#dce8ef;line-height:1.5}.wrap{max-width:920px;margin:28px auto;padding:0 18px}.panel{background:#fff;border:1px solid #dce3e8;border-radius:8px;padding:22px;margin-bottom:18px}label{font-weight:700;display:block;margin-bottom:9px}textarea{width:100%;min-height:132px;padding:12px;border:1px solid #aebbc5;border-radius:6px;font:inherit;resize:vertical}button{font:inherit;cursor:pointer;border-radius:6px;padding:10px 15px;border:1px solid #b7c4cc;background:#fff;color:#173b57}button:hover{background:#edf3f6}button.primary{background:#176a8a;color:white;border-color:#176a8a;font-weight:700}button.primary:hover{background:#125773}button:disabled{opacity:.6;cursor:wait}.actions{display:flex;gap:10px;margin-top:12px;align-items:center}.examples{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.examples button{font-size:.88rem}.muted{color:#5d6b75;font-size:.93rem;line-height:1.5}.result{margin-top:18px;padding:16px;background:#f2f6f8;border-left:4px solid #176a8a;border-radius:4px}.result h2{font-size:1.2rem;margin:0 0 8px}.result p{margin:6px 0}.badge{font-weight:700}.history-item{border-top:1px solid #e1e6ea;padding:11px 0;display:flex;justify-content:space-between;gap:12px}.history-item span:first-child{overflow-wrap:anywhere}.sr-only{position:absolute;left:-9999px}footer{font-size:.85rem;color:#5d6b75;text-align:center;padding:8px 20px 28px}@media(max-width:560px){.panel{padding:16px}.actions{align-items:stretch;flex-direction:column}.history-item{flex-direction:column}}
+  </style>
+</head>
+<body>
+  <header><h1>Gujarati-English Sarcasm Detection System</h1><p>Enter a Romanized Gujarati-English sentence to see how a text classifier labels it. The result is a learned pattern match, not a judgment of the writer’s intent.</p></header>
+  <main class="wrap">
+    <section class="panel" aria-labelledby="input-title">
+      <label id="input-title" for="sentence">Sentence</label>
+      <textarea id="sentence" maxlength="1000" placeholder="Example: Wah, su mast service che, 3 kalak pachi thandi chai aapi!"></textarea>
+      <div class="actions"><button id="check" class="primary">Check Sentence</button><button id="clear">Clear</button><span id="status" class="muted" aria-live="polite">Up to 1,000 characters</span></div>
+      <h2 style="font-size:1rem;margin:22px 0 0">Try an example</h2>
+      <div id="examples" class="examples"></div>
+      <div id="result" class="result" hidden aria-live="polite"></div>
+    </section>
+    <section class="panel"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><h2 style="font-size:1.15rem;margin:0">Recent predictions</h2><button id="clear-history">Clear history</button></div><p class="muted">This list is kept in this browser session only.</p><div id="history" class="muted">No predictions yet.</div></section>
+    <p class="muted">The training dataset is programmatically authored and contains Romanized spelling variations. Scores on it may not represent performance on everyday conversation.</p>
+  </main><footer>Gujarati-English Sarcasm Detection System</footer>
+  <script>
+    const input=document.querySelector('#sentence'), result=document.querySelector('#result'), status=document.querySelector('#status'), historyBox=document.querySelector('#history');let history=[];
+    async function loadExamples(){try{const response=await fetch('/api/examples');const items=await response.json();const box=document.querySelector('#examples');items.slice(0,6).forEach(item=>{const b=document.createElement('button');b.textContent=item.category;b.title=item.text;b.addEventListener('click',()=>{input.value=item.text;input.focus()});box.appendChild(b)})}catch{document.querySelector('#examples').textContent='Examples are temporarily unavailable.'}}
+    function showHistory(){historyBox.replaceChildren();if(!history.length){historyBox.textContent='No predictions yet.';return}history.slice(0,8).forEach(item=>{const row=document.createElement('div');row.className='history-item';const sentence=document.createElement('span');sentence.textContent=item.text;const label=document.createElement('strong');label.textContent=item.prediction;row.append(sentence,label);historyBox.append(row)})}
+    document.querySelector('#check').addEventListener('click',async()=>{const text=input.value.trim();if(!text){status.textContent='Enter a sentence first.';input.focus();return}status.textContent='Checking…';const button=document.querySelector('#check');button.disabled=true;try{const response=await fetch('/api/predict',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text})});const data=await response.json();if(!response.ok)throw new Error(data.detail||'Prediction failed.');result.replaceChildren();const title=document.createElement('h2');title.textContent='Prediction: '+data.prediction;const explanation=document.createElement('p');explanation.textContent=data.explanation;const caveat=document.createElement('p');caveat.className='muted';caveat.textContent='The listed signals are patterns learned from training examples and do not prove the sentence’s intended meaning.';result.append(title,explanation,caveat);result.hidden=false;history.unshift(data);showHistory();status.textContent='Done.'}catch(error){status.textContent=error.message}finally{button.disabled=false}});
+    document.querySelector('#clear').addEventListener('click',()=>{input.value='';result.hidden=true;result.replaceChildren();status.textContent='Up to 1,000 characters';input.focus()});document.querySelector('#clear-history').addEventListener('click',()=>{history=[];showHistory()});loadExamples();
+  </script>
+</body></html>

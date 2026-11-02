@@ -1,0 +1,21 @@
+{
+  "name": "gujarati-english-sarcasm-detection-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Interactive Web Frontend for Gujarati-English Sarcasm Detection",
+  "scripts": {
+    "start": "serve . -p 3000",
+    "dev": "serve . -p 3000"
+  },
+  "keywords": [
+    "sarcasm-detection",
+    "nlp",
+    "gujarati",
+    "code-mixed"
+  ],
+  "author": "Antigravity AI Pair Programmer",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}
